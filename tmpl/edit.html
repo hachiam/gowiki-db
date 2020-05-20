@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Editing {{.GetTitle}}</title>
+    <script type="text/javascript" src="/static/js/showdown.min.js"></script>
+
+  </head>
+  <style>
+   body {
+     font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+     font-size: 16px;
+     line-height: 1.42857143;
+     color: #333;
+     background-color: #fff;
+   }
+   ul li {
+     line-height: 24px;
+   }
+   blockquote {
+     border-left:#eee solid 5px;
+     padding-left:20px;
+   }
+   code {
+     color:#D34B62;
+     background: #F9F2F4;
+   }
+
+   #edit {
+     width: 50%;
+     height: 100%;
+     float:left;
+   }
+
+   #result {
+     width: 50%;
+     height: 100%;
+     float: right;
+   }
+
+  </style>
+
+  <body>
+    <form action="/save/{{.GetTitle}}" method="POST">
+      <div id="edit">
+	<textarea name="body" rows="20" cols="80" id="content" onkeyup="compile()">{{printf "%s" .GetBody}}</textarea>
+	<br/>
+	<input type="submit" value="Save">
+      </div>
+    </form>
+    <div id="result"></div>
+
+    <script type="text/javascript">
+     function compile(){
+       var text = document.getElementById("content").value;
+       var converter = new showdown.Converter();
+       var html = converter.makeHtml(text);
+       document.getElementById("result").innerHTML = html;
+     }
+    </script>
+
+  </body>
+
+</html>
