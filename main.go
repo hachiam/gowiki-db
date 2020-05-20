@@ -14,6 +14,7 @@ func main() {
 	http.HandleFunc("/save/", webHandler.SaveHandler)
 	http.HandleFunc("/add", webHandler.AddPaper)
 	http.HandleFunc("/download/", webHandler.DownloadFile)
+	http.HandleFunc("/delete/", webHandler.DeletePaper)
 	fs := http.FileServer(http.Dir("./static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	log.Fatal(http.ListenAndServe(":9090", nil))

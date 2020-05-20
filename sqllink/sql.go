@@ -99,6 +99,19 @@ func SelectAllPaper(conn *sql.DB) []*Paper {
 
 }
 
+func SelectBySpecies(conn *sql.DB, species string) []*Paper {
+	rows, err := conn.Query("select * from paper where species=?", species)
+	errhandler("Selectbyspecies : conn.Query", err)
+	var rowsData []*Paper
+	for rows.Next() {
+		row := new(Paper)
+		rows.Scan(&row.paperID, &row.title, &row.body, &row.species)
+		rowsData = append(rowsData, row)
+	}
+	return rowsData
+
+}
+
 func UpdatePaper(conn *sql.DB, title, body string) {
 	stmt, err := conn.Prepare("update paper set body=? where title=?")
 	errhandler("UpdataPaper : conn.Prepare", err)
@@ -108,6 +121,18 @@ func UpdatePaper(conn *sql.DB, title, body string) {
 	errhandler("UpdataPaper : res.Rowsaffected", err)
 	fmt.Println(id)
 }
+
+/*
+func UpdateSpecies(conn *sql.DB, title, species string) {
+	stmt, err := conn.Prepare("updata paper set species=? where title=?")
+	errhandler("Updatespecies : conn.Prepare", err)
+	res, err := stmt.Exec(species, title)
+	errhandler("updatespecies : stmt.Exec", err)
+	id, err := res.RowsAffected()
+	errhandler("Updatespecies : res.Rowsaffected", err)
+	fmt.Println(id)
+}
+*/
 
 func DeletePaper(conn *sql.DB, title string) {
 	stmt, err := conn.Prepare("delete from paper where title=?")

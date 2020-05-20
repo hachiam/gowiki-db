@@ -14,7 +14,7 @@ import (
 )
 
 var templates = template.Must(template.ParseFiles("./tmpl/edit.html", "./tmpl/view.html", "./tmpl/addFile.html", "./tmpl/index.html", "./tmpl/list.html"))
-var validPath = regexp.MustCompile("^/(edit|save|view|add|list|download)/([a-zA-Z0-9]+)$")
+var validPath = regexp.MustCompile("^/(edit|save|view|add|list|download|delete)/([a-zA-Z0-9\\x{4e00}-\\x{9fa5}]+)$")
 
 func getTitle(w http.ResponseWriter, r *http.Request) (string, error) {
 	m := validPath.FindStringSubmatch(r.URL.Path)
@@ -125,10 +125,14 @@ func AddPaper(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		title := r.Form.Get("title")
+		species := r.Form.Get("species")
 		conn := sqllink.Connection()
 		defer sqllink.ConnectionClose(conn)
-		sqllink.InsertPaper(conn, title, "新文件", "新类别")
-		http.Redirect(w, r, "/", 302)
+		p := sqllink.SelectPaperbyTitle(conn, title)
+		if p.GetTitle() == ""{
+			sqllink.InsertPaper(conn, title, "新文件", species)
+		} 
+		http.Redirect(w, r, "/edit/"+title, 302)
 	}
 
 }
@@ -167,6 +171,18 @@ func DownloadFile(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+func DeletePaper(w http.ResponseWriter, r *http.Request) {
+	title, err := getTitle(w, r)
+	if err != nil {
+		log.Fatal("Deletepaper : gettitle", err.Error())
+	}
+	conn := sqllink.Connection()
+	defer sqllink.ConnectionClose(conn)
+	sqllink.DeletePaper(conn, title)
+	w.Write([]byte("<html><h1><a href="+`/list`+">点击文件列表</a></h1></html>"))
+}
+
 ///-------------------测试
 func Test() {
 	conn := sqllink.Connection()
