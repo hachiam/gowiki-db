@@ -32,9 +32,9 @@
   </head>
 
   <body>
-    <p>[<a href="/edit/{{.GetTitle}}">编辑</a>]
-      |<a href="/index">返回首页</a>
-      |<a href="/download/{{.GetTitle}}">导出为markdown文件</a>
+    <p>[<a href="/edit/{{.GetTitle}}">编辑</a>]&nbsp 
+      |&nbsp <a href="/index">返回首页</a>&nbsp 
+      |&nbsp <a href="/download/{{.GetTitle}}">导出为markdown文件</a>
     </p>
     <p id="content" hidden>{{printf "%s" .GetBody}}</p>
     <div id="result"></div>
