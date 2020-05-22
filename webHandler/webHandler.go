@@ -129,9 +129,9 @@ func AddPaper(w http.ResponseWriter, r *http.Request) {
 		conn := sqllink.Connection()
 		defer sqllink.ConnectionClose(conn)
 		p := sqllink.SelectPaperbyTitle(conn, title)
-		if p.GetTitle() == ""{
+		if p.GetTitle() == "" {
 			sqllink.InsertPaper(conn, title, "新文件", species)
-		} 
+		}
 		http.Redirect(w, r, "/edit/"+title, 302)
 	}
 
@@ -143,6 +143,10 @@ func List(w http.ResponseWriter, r *http.Request) {
 	defer sqllink.ConnectionClose(conn)
 	papers := sqllink.SelectAllPaper(conn)
 	temp := ""
+	if papers == nil {
+		w.Write([]byte("<html><h1>文章列表为空，请先添加文章！！</h1><hr/><br/><a href=/add>添加文章</a></html>"))
+		return
+	}
 	if papers[0] != nil {
 		for i := 0; i < len(papers); i++ {
 			temp += `<li><a href="/view/` + papers[i].GetTitle() + `">` + papers[i].GetTitle() + `</a></li>`
@@ -165,9 +169,9 @@ func DownloadFile(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal("DownloadFile : os.Create", err.Error())
 	} else {
-		_,err = f.Write([]byte(p.GetBody()))
+		_, err = f.Write([]byte(p.GetBody()))
 		if err != nil {
-			log.Fatal("Downloadfile : f.Write ", err.Error()) 
+			log.Fatal("Downloadfile : f.Write ", err.Error())
 		}
 	}
 }
@@ -180,7 +184,7 @@ func DeletePaper(w http.ResponseWriter, r *http.Request) {
 	conn := sqllink.Connection()
 	defer sqllink.ConnectionClose(conn)
 	sqllink.DeletePaper(conn, title)
-	w.Write([]byte("<html><h1><a href="+`/list`+">点击文件列表</a></h1></html>"))
+	w.Write([]byte("<html><h1><a href=" + `/list` + ">点击文件列表</a></h1></html>"))
 }
 
 ///-------------------测试

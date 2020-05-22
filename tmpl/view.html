@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8">
-    <title>{{.GetTitle}}</title>
-    <style>
-     body {
-       font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
-       font-size: 16px;
-       line-height: 1.42857143;
-       color: #333;
-       background-color: #fff;
-     }
+<head>
+        <meta charset="UTF-8">
+        <title>{{.GetTitle}}</title>
+        <style>
+                body {
+                        font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+                        font-size: 16px;
+                        line-height: 1.42857143;
+                        color: #333;
+                        background-color: #fff;
+                }
 
-     ul li {
-       line-height: 24px;
-     }
+                ul li {
+                        line-height: 24px;
+                }
 
-     blockquote {
-       border-left: #eee solid 5px;
-       padding-left: 20px;
-     }
+                blockquote {
+                        border-left: #eee solid 5px;
+                        padding-left: 20px;
+                }
 
-     code {
-       color: #D34B62;
-       background: #F9F2F4;
-     }
-    </style>
-    <script type="text/javascript" src="/static/js/showdown.min.js"></script>
+                code {
+                        color: #D34B62;
+                        background: #F9F2F4;
+                }
+        </style>
+        <script type="text/javascript" src="/static/js/showdown.min.js"></script>
 
-  </head>
+</head>
 
-  <body>
-    <p>[<a href="/edit/{{.GetTitle}}">编辑</a>]&nbsp 
-      |&nbsp [<a href="/index">返回首页</a>]&nbsp 
-      |&nbsp [<a href="/download/{{.GetTitle}}">导出为markdown文件</a>]
-      |&nbsp [<a href="/delete/{{.GetTitle}}">删除文章</a>]&nbsp 
-    </p>
-    <p id="content" hidden>{{printf "%s" .GetBody}}</p>
-    <div id="result"></div>
-    <br />
-  </body>
-  <script type="text/javascript">
-   var text = document.getElementById("content").innerHTML;
-   var converter = new showdown.Converter();
-   var html = converter.makeHtml(text);
-   document.getElementById("result").innerHTML = html;
-  </script>
+<body>
+        <p>[<a href="/edit/{{.GetTitle}}">编辑</a>]&nbsp
+                |&nbsp [<a href="/index">返回首页</a>]&nbsp
+                |&nbsp [<a href="/download/{{.GetTitle}}">导出为markdown文件</a>]
+                |&nbsp [<a href="/delete/{{.GetTitle}}">删除文章</a>]&nbsp
+        </p>
+        <p id="content" hidden>{{printf "%s" .GetBody}}</p>
+        <div id="result"></div>
+        <br />
+</body>
+<script type="text/javascript">
+        var text = document.getElementById("content").innerHTML;
+        var converter = new showdown.Converter();
+        var html = converter.makeHtml(text);
+        document.getElementById("result").innerHTML = html;
+</script>
 
 </html>
