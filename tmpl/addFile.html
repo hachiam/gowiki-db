@@ -11,7 +11,17 @@
         <hr />
         <form action="/add" method="post">
                 文章名: <input name="title" type="text" value="" />
-                文章类型: <input name="species" type="text" value="" />
+                <dl>
+                        <dt>文章类型：</dt>
+                        <dd>
+                                <select name="species">
+                                        <option value="日记">日记</option>
+                                        <option value="笔记">笔记</option>
+                                        <option value="随感">随感</option>
+                                </select>
+                        </dd>
+                </dl>
+                <br>
                 <input name="submit" type="submit" value="提交" />
         </form>
 </body>

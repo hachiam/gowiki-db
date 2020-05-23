@@ -1,3 +1,6 @@
+//@title sqllink
+//@description 数据相关操作的包
+
 package sqllink
 
 import (
@@ -67,6 +70,7 @@ func ConnectionClose(conn *sql.DB) {
 }
 
 func InsertPaper(conn *sql.DB, title, body, species string) {
+	//插入信息到数据库
 	stmt, err := conn.Prepare("insert into paper values(?, ?, ?)")
 	errhandler("InsertPaper : conn.Prepare", err)
 	res, err := stmt.Exec(title, body, species)
@@ -76,6 +80,7 @@ func InsertPaper(conn *sql.DB, title, body, species string) {
 }
 
 func SelectPaperbyTitle(conn *sql.DB, title string) *Paper {
+	//通过title查询
 	rows, err := conn.Query("select * from paper where title=?", title)
 	errhandler("SelectPaperbyTitle : conn.Query", err)
 	defer rows.Close()
@@ -87,6 +92,7 @@ func SelectPaperbyTitle(conn *sql.DB, title string) *Paper {
 }
 
 func SelectAllPaper(conn *sql.DB) []*Paper {
+	//查询所有的paper
 	rows, err := conn.Query("select * from paper")
 	errhandler("SelectAllPaper : conn.Query", err)
 	var rowsData []*Paper
@@ -100,6 +106,7 @@ func SelectAllPaper(conn *sql.DB) []*Paper {
 }
 
 func SelectBySpecies(conn *sql.DB, species string) []*Paper {
+	//通过类别进行查询
 	rows, err := conn.Query("select * from paper where species=?", species)
 	errhandler("Selectbyspecies : conn.Query", err)
 	var rowsData []*Paper
@@ -113,6 +120,7 @@ func SelectBySpecies(conn *sql.DB, species string) []*Paper {
 }
 
 func UpdatePaper(conn *sql.DB, title, body string) {
+	//更新paper信息
 	stmt, err := conn.Prepare("update paper set body=? where title=?")
 	errhandler("UpdataPaper : conn.Prepare", err)
 	res, err := stmt.Exec(body, title)
@@ -135,6 +143,7 @@ func UpdateSpecies(conn *sql.DB, title, species string) {
 */
 
 func DeletePaper(conn *sql.DB, title string) {
+	//删除文章
 	stmt, err := conn.Prepare("delete from paper where title=?")
 	errhandler("Deletepaper : conn.Prepare", err)
 	res, err := stmt.Exec(title)
